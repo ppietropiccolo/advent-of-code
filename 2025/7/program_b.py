@@ -3,7 +3,7 @@ import sys
 np.set_printoptions(threshold=sys.maxsize)
 
 def solve():
-    with open("example.txt") as f:
+    with open("input.txt") as f:
         matrix = [[c for c in line[:-1]] for line in f.readlines()]
     
     rays = {"S", "|"}
@@ -18,19 +18,16 @@ def solve():
         # assert len(line) == dimension # good 👍
         for j, element in enumerate(line):
             upper = matrix[i-1][j]
-            if i == 12 and j == 6:
-                print("!")
-            window = ways_to_arrive[i-1:i+2, j-1:j+2]
             if upper not in rays: # no ray arrives to element: ignore it
                 continue
-            if element == "^": # splitter
+            if element == "^": # splitter: add wta to element to both left and right elements
                 matrix[i][j-1] = "|" # make previous element a ray
-                ways_to_arrive[i, j-1] += ways_to_arrive[i-1, j-1] + ways_to_arrive[i-1, j] # wta to its upper + wta to element 
+                ways_to_arrive[i, j-1] += ways_to_arrive[i-1, j] # add wta to upper
                 matrix[i][j+1] = "|" # make next element a ray
-                ways_to_arrive[i, j+1] += ways_to_arrive[i-1, j+1] + ways_to_arrive[i-1, j] # wta to its upper + wta to element
+                ways_to_arrive[i, j+1] += ways_to_arrive[i-1, j] # add wta to upper
             else: # ray above and element is "." or "|" (doesn't matter)
                 matrix[i][j] = "|" # make the upper ray continue
-                ways_to_arrive[i, j] = ways_to_arrive[i-1, j] # wta to previous <- problem should be here: when setting an element
+                ways_to_arrive[i, j] += ways_to_arrive[i-1, j] # add wta to upper
 
 
     with open("output.txt", "w") as f: [print("".join(row), file = f) for row in matrix]
