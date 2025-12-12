@@ -7,3 +7,5 @@
 5. Fresh and available ingredients
 6. Cephalopod maths
 7. Teleport fixing, using timelines of quantum particles
+8. Joining boxes from coordinates
+9. Red and green tiles, biggest square
